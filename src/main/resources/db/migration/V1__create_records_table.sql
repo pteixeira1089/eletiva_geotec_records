@@ -12,11 +12,12 @@ create table records.category (
 
 create table records.record (
     record_id bigserial primary key,
+    user_id bigserial not null,
     picture_url TEXT not null,
     created_at TIMESTAMP not null,
     latitude DOUBLE PRECISION,
     longitude DOUBLE PRECISION,
     feeling_id bigserial references records.feeling(feeling_id),
     category_id bigserial references records.category(category_id),
-    description TEXT
+    comment TEXT
 );
