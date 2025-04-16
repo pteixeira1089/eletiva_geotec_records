@@ -8,7 +8,5 @@ import java.util.List;
 
 @Repository
 public interface FeelingRepository extends JpaRepository<Feeling, Long> {
-    Feeling findByFeelingId(Long feelingId);
-
-    List<Feeling> queryByFeelingLike(String feeling);
+    List<Feeling> findByFeelingContainingIgnoreCase(String feeling);
 }

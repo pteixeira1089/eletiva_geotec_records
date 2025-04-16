@@ -10,5 +10,5 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     Category findByCategoryId(Long categoryId);
 
-    List<Category> queryByCategoryLike(String category);
+    List<Category> findByCategoryContainingIgnoreCase(String category);
 }

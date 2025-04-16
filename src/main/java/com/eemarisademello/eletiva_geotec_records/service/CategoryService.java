@@ -33,7 +33,7 @@ public class CategoryService {
     }
 
     public List<CategoryDTO> getByCategoryLike(String category) {
-        List<Category> categories = categoryRepository.queryByCategoryLike(category);
+        List<Category> categories = categoryRepository.findByCategoryContainingIgnoreCase(category);
         return categories
                 .stream()
                 .map(CategoryDTO::convert)
@@ -41,8 +41,18 @@ public class CategoryService {
     }
 
     public CategoryDTO save(CategoryDTO categoryDTO) {
-        Category category = categoryRepository.save(Category.convert(categoryDTO));
-        return CategoryDTO.convert(category);
+        Category category = new Category();
+
+        //Only set ID if explicitly provided (for update)
+        if (categoryDTO.getCategoryId() != null) {
+            category.setCategoryId(categoryDTO.getCategoryId());
+        }
+
+        category.setCategory(categoryDTO.getCategory());
+
+        Category savedCategory = categoryRepository.save(category);
+
+        return CategoryDTO.convert(savedCategory);
     }
 
     public void delete(Long id) {

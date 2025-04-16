@@ -32,7 +32,7 @@ public class FeelingService {
     }
 
     public List<FeelingDTO> getByFeelingLike(String feeling){
-        List<Feeling> feelings = feelingRepository.queryByFeelingLike(feeling);
+        List<Feeling> feelings = feelingRepository.findByFeelingContainingIgnoreCase(feeling);
         return feelings
                 .stream()
                 .map(FeelingDTO::convert)
@@ -49,8 +49,19 @@ public class FeelingService {
     }
 
     public FeelingDTO save(FeelingDTO feelingDTO){
-        Feeling feeling = feelingRepository.save(Feeling.convert(feelingDTO));
-        return FeelingDTO.convert(feeling);
+        //validate input
+        if (feelingDTO.getFeeling() == null || feelingDTO.getFeeling().isBlank()) {
+            throw new IllegalArgumentException("Feeling cannot be empty");
+        }
+
+        //Creates new entity WITHOUT setting ID
+        Feeling feeling = new Feeling();
+        feeling.setFeeling(feelingDTO.getFeeling());
+
+        //Let JPA handle ID generation
+        Feeling feelingSaved = feelingRepository.save(feeling);
+
+        return FeelingDTO.convert(feelingSaved);
     }
 
     public FeelingDTO update(Long id, FeelingDTO feelingDTO){

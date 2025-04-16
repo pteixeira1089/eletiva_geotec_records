@@ -1,6 +1,7 @@
 package com.eemarisademello.eletiva_geotec_records.service;
 
 import com.eemarisademello.eletiva_geotec_records.dto.RecordDTO;
+import com.eemarisademello.eletiva_geotec_records.model.Category;
 import com.eemarisademello.eletiva_geotec_records.model.Feeling;
 import com.eemarisademello.eletiva_geotec_records.model.Record;
 import com.eemarisademello.eletiva_geotec_records.repository.CategoryRepository;
@@ -19,35 +20,35 @@ public class RecordService {
     private final CategoryRepository categoryRepository;
     private final FeelingRepository feelingRepository;
 
-    List<RecordDTO> getAllRecords() {
+    public List<RecordDTO> getAllRecords() {
         return recordRepository.findAll()
                 .stream()
                 .map(RecordDTO::convert)
                 .toList();
     }
 
-    List<RecordDTO> getRecordsByUserId(Long userId) {
+    public List<RecordDTO> getRecordsByUserId(Long userId) {
         return recordRepository.findRecordsByUserId(userId)
                 .stream()
                 .map(RecordDTO::convert)
                 .toList();
     }
 
-    List<RecordDTO> getRecordsByCategoryId(Long categoryId) {
+    public List<RecordDTO> getRecordsByCategoryId(Long categoryId) {
         return recordRepository.findRecordsByCategory(categoryId)
                 .stream()
                 .map(RecordDTO::convert)
                 .toList();
     }
 
-    List<RecordDTO> getRecordsByFeelingId(Long feelingId) {
+    public List<RecordDTO> getRecordsByFeelingId(Long feelingId) {
         return recordRepository.findRecordsByFeeling(feelingId)
                 .stream()
                 .map(RecordDTO::convert)
                 .toList();
     }
 
-    RecordDTO getRecordById(Long id) {
+    public RecordDTO getRecordById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("ID cannot be null");
         }
@@ -58,7 +59,7 @@ public class RecordService {
                 .orElseThrow(() -> new NoSuchElementException("No record found with ID: " + id));
     }
 
-    RecordDTO saveRecord(RecordDTO recordDTO) {
+    public RecordDTO saveRecord(RecordDTO recordDTO) {
         //1. Validate the input
         if (recordDTO == null) {
             throw new IllegalArgumentException("RecordDTO cannot be null");
@@ -70,7 +71,7 @@ public class RecordService {
         }
 
         //3. Verify if the feeling exists in the database
-        if (feelingRepository.findByFeelingId(recordDTO.getFeeling().getFeelingId()) == null) {
+        if (feelingRepository.findById(recordDTO.getFeeling().getFeelingId()).isEmpty()) {
             throw new NoSuchElementException("No feeling found with ID: " + recordDTO.getFeeling().getFeelingId());
         }
 
@@ -79,7 +80,7 @@ public class RecordService {
         return RecordDTO.convert(recordRepository.save(record));
     }
 
-    RecordDTO updateRecord(Long id, RecordDTO recordDTO) {
+    public RecordDTO updateRecord(Long id, RecordDTO recordDTO) {
         //1. Validate the input
         if (recordDTO == null) {
             throw new IllegalArgumentException("RecordDTO cannot be null");
@@ -91,18 +92,27 @@ public class RecordService {
 
         //3. Update the record if the new value is not null or empty
         if (recordDTO.getFeeling() != null && recordDTO.getFeeling().getFeelingId() != null) {
-            Feeling feeling = feelingRepository.findById(recordDTO.getFeeling().getFeelingId())
-                            .orElseThrow(() -> new NoSuchElementException(
-                                    "No feeling found with ID: " + recordDTO.getFeeling().getFeelingId()
-                            ));
-            record.setFeeling(feelingRepository.findByFeelingId(recordDTO.getFeeling().getFeelingId()));
+            Feeling feeling = feelingRepository
+                    .findById(recordDTO.getFeeling().getFeelingId())
+                    .orElseThrow(() -> new NoSuchElementException("No feeling found with ID: " + recordDTO.getFeeling().getFeelingId()));
+
+            record.setFeeling(feeling);
         }
 
-        //4. Save the updated record
+        //4. If the category is not null, verify if it exists
+        if (recordDTO.getCategory() != null && recordDTO.getCategory().getCategoryId() != null) {
+            Category category = categoryRepository
+                    .findById(recordDTO.getCategory().getCategoryId())
+                    .orElseThrow(() -> new NoSuchElementException("No category found with ID: " + recordDTO.getCategory().getCategoryId()));
+
+            record.setCategory(category);
+        }
+
+        //5. Save the updated record
         return RecordDTO.convert(recordRepository.save(record));
     }
 
-    void deleteRecord(Long id) {
+    public void deleteRecord(Long id) {
         Record record = recordRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No record found with ID: " + id));
         recordRepository.delete(record);

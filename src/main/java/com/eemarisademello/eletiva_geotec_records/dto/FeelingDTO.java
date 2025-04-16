@@ -13,7 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeelingDTO {
-    @NotNull
     private Long feelingId;
 
     @NotBlank

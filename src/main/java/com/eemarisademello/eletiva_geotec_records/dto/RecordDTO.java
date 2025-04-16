@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class RecordDTO {
 
-    @NotNull
     private Long recordId;
 
     @NotNull
@@ -25,7 +24,7 @@ public class RecordDTO {
     @NotBlank
     private String pictureUrl;
 
-    @NotBlank
+
     private LocalDateTime createdAt;
 
     @NotNull
@@ -37,7 +36,7 @@ public class RecordDTO {
     @NotNull
     private FeelingDTO feeling;
 
-    @NotNull
+
     private CategoryDTO category;
 
     @NotBlank

@@ -13,7 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryDTO {
-    @NotNull
     private Long categoryId;
 
     @NotBlank
