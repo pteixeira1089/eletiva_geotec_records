@@ -1,6 +1,7 @@
 package com.eemarisademello.eletiva_geotec_records.service;
 
-import com.eemarisademello.eletiva_geotec_records.dto.RecordDTO;
+import com.eemarisademello.eletiva_geotec_client.dto.RecordDTO;
+import com.eemarisademello.eletiva_geotec_records.converter.DTOConverter;
 import com.eemarisademello.eletiva_geotec_records.model.Category;
 import com.eemarisademello.eletiva_geotec_records.model.Feeling;
 import com.eemarisademello.eletiva_geotec_records.model.Record;
@@ -23,28 +24,28 @@ public class RecordService {
     public List<RecordDTO> getAllRecords() {
         return recordRepository.findAll()
                 .stream()
-                .map(RecordDTO::convert)
+                .map(DTOConverter::recordToDTO)
                 .toList();
     }
 
     public List<RecordDTO> getRecordsByUserId(Long userId) {
         return recordRepository.findRecordsByUserId(userId)
                 .stream()
-                .map(RecordDTO::convert)
+                .map(DTOConverter::recordToDTO)
                 .toList();
     }
 
     public List<RecordDTO> getRecordsByCategoryId(Long categoryId) {
         return recordRepository.findRecordsByCategory(categoryId)
                 .stream()
-                .map(RecordDTO::convert)
+                .map(DTOConverter::recordToDTO)
                 .toList();
     }
 
     public List<RecordDTO> getRecordsByFeelingId(Long feelingId) {
         return recordRepository.findRecordsByFeeling(feelingId)
                 .stream()
-                .map(RecordDTO::convert)
+                .map(DTOConverter::recordToDTO)
                 .toList();
     }
 
@@ -55,7 +56,7 @@ public class RecordService {
 
         return recordRepository
                 .findById(id)
-                .map(RecordDTO::convert)
+                .map(DTOConverter::recordToDTO)
                 .orElseThrow(() -> new NoSuchElementException("No record found with ID: " + id));
     }
 
@@ -77,7 +78,7 @@ public class RecordService {
 
         //4. Convert and save
         Record record = Record.convert(recordDTO);
-        return RecordDTO.convert(recordRepository.save(record));
+        return DTOConverter.recordToDTO(recordRepository.save(record));
     }
 
     public RecordDTO updateRecord(Long id, RecordDTO recordDTO) {
@@ -109,7 +110,7 @@ public class RecordService {
         }
 
         //5. Save the updated record
-        return RecordDTO.convert(recordRepository.save(record));
+        return DTOConverter.recordToDTO(recordRepository.save(record));
     }
 
     public void deleteRecord(Long id) {

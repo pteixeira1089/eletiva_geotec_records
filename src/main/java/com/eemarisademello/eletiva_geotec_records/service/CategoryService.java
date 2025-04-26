@@ -1,7 +1,8 @@
 package com.eemarisademello.eletiva_geotec_records.service;
 
+import com.eemarisademello.eletiva_geotec_records.converter.DTOConverter;
 import com.eemarisademello.eletiva_geotec_records.model.Category;
-import com.eemarisademello.eletiva_geotec_records.dto.CategoryDTO;
+import com.eemarisademello.eletiva_geotec_client.dto.CategoryDTO;
 import com.eemarisademello.eletiva_geotec_records.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,14 +21,14 @@ public class CategoryService {
         List<Category> categories = categoryRepository.findAll();
         return categories
                 .stream()
-                .map(CategoryDTO::convert)
+                .map(DTOConverter::categoryToDTO)
                 .collect(Collectors.toList());
     }
 
     public CategoryDTO getById(Long id) {
         Category category = categoryRepository.findById(id).orElse(null);
         if (category != null) {
-            return CategoryDTO.convert(category);
+            return DTOConverter.categoryToDTO(category);
         }
         return null;
     }
@@ -36,7 +37,7 @@ public class CategoryService {
         List<Category> categories = categoryRepository.findByCategoryContainingIgnoreCase(category);
         return categories
                 .stream()
-                .map(CategoryDTO::convert)
+                .map(DTOConverter::categoryToDTO)
                 .collect(Collectors.toList());
     }
 
@@ -52,7 +53,7 @@ public class CategoryService {
 
         Category savedCategory = categoryRepository.save(category);
 
-        return CategoryDTO.convert(savedCategory);
+        return DTOConverter.categoryToDTO(savedCategory);
     }
 
     public void delete(Long id) {
@@ -80,6 +81,6 @@ public class CategoryService {
         }
 
         //4. Save the updated category
-        return CategoryDTO.convert(categoryRepository.save(category));
+        return DTOConverter.categoryToDTO(categoryRepository.save(category));
         }
 }

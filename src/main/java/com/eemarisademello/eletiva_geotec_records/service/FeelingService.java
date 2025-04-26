@@ -1,6 +1,7 @@
 package com.eemarisademello.eletiva_geotec_records.service;
 
-import com.eemarisademello.eletiva_geotec_records.dto.FeelingDTO;
+import com.eemarisademello.eletiva_geotec_client.dto.FeelingDTO;
+import com.eemarisademello.eletiva_geotec_records.converter.DTOConverter;
 import com.eemarisademello.eletiva_geotec_records.model.Feeling;
 import com.eemarisademello.eletiva_geotec_records.repository.FeelingRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +20,14 @@ public class FeelingService {
         List<Feeling> feelings = feelingRepository.findAll();
         return feelings
                 .stream()
-                .map(FeelingDTO::convert)
+                .map(DTOConverter::feelingToDTO)
                 .toList();
     }
 
     public FeelingDTO getFeelingById(Long id){
         Feeling feeling = feelingRepository.findById(id).orElse(null);
         if (feeling != null) {
-            return FeelingDTO.convert(feeling);
+            return DTOConverter.feelingToDTO(feeling);
         }
         return null;
     }
@@ -35,7 +36,7 @@ public class FeelingService {
         List<Feeling> feelings = feelingRepository.findByFeelingContainingIgnoreCase(feeling);
         return feelings
                 .stream()
-                .map(FeelingDTO::convert)
+                .map(DTOConverter::feelingToDTO)
                 .toList();
     }
 
@@ -61,7 +62,7 @@ public class FeelingService {
         //Let JPA handle ID generation
         Feeling feelingSaved = feelingRepository.save(feeling);
 
-        return FeelingDTO.convert(feelingSaved);
+        return DTOConverter.feelingToDTO(feelingSaved);
     }
 
     public FeelingDTO update(Long id, FeelingDTO feelingDTO){
@@ -80,6 +81,6 @@ public class FeelingService {
         }
 
         //4. Save the updated feeling
-        return FeelingDTO.convert(feelingRepository.save(feeling));
+        return DTOConverter.feelingToDTO(feelingRepository.save(feeling));
     }
 }

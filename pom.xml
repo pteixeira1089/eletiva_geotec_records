@@ -71,6 +71,18 @@
 			<artifactId>postgresql</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>com.eemarisademello</groupId>
+			<artifactId>eletiva_geotec_client</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+			<version>3.1.4</version>
+		</dependency>
+
 
 	</dependencies>
 

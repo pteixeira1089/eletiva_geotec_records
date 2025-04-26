@@ -1,6 +1,6 @@
 package com.eemarisademello.eletiva_geotec_records.model;
 
-import com.eemarisademello.eletiva_geotec_records.dto.RecordDTO;
+import com.eemarisademello.eletiva_geotec_client.dto.RecordDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
