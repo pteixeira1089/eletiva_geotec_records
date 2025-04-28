@@ -40,10 +40,14 @@ public class DTOConverter {
 
         RecordDTO recordDTO = new RecordDTO();
         recordDTO.setRecordId(record.getRecordId());
+        recordDTO.setUserId(record.getUserId());
+        recordDTO.setPictureUrl(record.getPictureUrl());
+        recordDTO.setCreatedAt(record.getCreatedAt());
+        recordDTO.setLatitude(record.getLatitude());
+        recordDTO.setLongitude(record.getLongitude());
         recordDTO.setFeeling(feelingToDTO(record.getFeeling()));
         recordDTO.setCategory(categoryToDTO(record.getCategory()));
-        recordDTO.setCreatedAt(record.getCreatedAt());
-        recordDTO.setCreatedAt(record.getCreatedAt());
+        recordDTO.setComment(record.getComment());
 
         return recordDTO;
 

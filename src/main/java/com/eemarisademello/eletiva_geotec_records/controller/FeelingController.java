@@ -1,6 +1,6 @@
 package com.eemarisademello.eletiva_geotec_records.controller;
 
-import com.eemarisademello.eletiva_geotec_records.dto.FeelingDTO;
+import com.eemarisademello.eletiva_geotec_client.dto.FeelingDTO;
 import com.eemarisademello.eletiva_geotec_records.service.FeelingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

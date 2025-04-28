@@ -1,6 +1,6 @@
 package com.eemarisademello.eletiva_geotec_records.controller;
 
-import com.eemarisademello.eletiva_geotec_records.dto.RecordDTO;
+import com.eemarisademello.eletiva_geotec_client.dto.RecordDTO;
 import com.eemarisademello.eletiva_geotec_records.service.RecordService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

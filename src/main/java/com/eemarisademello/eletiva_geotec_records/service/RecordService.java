@@ -21,6 +21,8 @@ public class RecordService {
     private final CategoryRepository categoryRepository;
     private final FeelingRepository feelingRepository;
 
+    private final UserService userService;
+
     public List<RecordDTO> getAllRecords() {
         return recordRepository.findAll()
                 .stream()
@@ -66,10 +68,15 @@ public class RecordService {
             throw new IllegalArgumentException("RecordDTO cannot be null");
         }
 
-        //2. Check if the feeling exists
-        if (recordDTO.getFeeling() == null || recordDTO.getFeeling().getFeelingId() == null) {
-            throw new IllegalArgumentException("Feeling ID cannot be null");
+        //2. Check if the user exists
+        if (recordDTO.getUserId() == null || userService.getUserById(recordDTO.getUserId()) == null) {
+            throw new IllegalArgumentException("User ID cannot be null");
         }
+
+//        //2. Check if the feeling exists
+//        if (recordDTO.getFeeling() == null || recordDTO.getFeeling().getFeelingId() == null) {
+//            throw new IllegalArgumentException("Feeling ID cannot be null");
+//        }
 
         //3. Verify if the feeling exists in the database
         if (feelingRepository.findById(recordDTO.getFeeling().getFeelingId()).isEmpty()) {
